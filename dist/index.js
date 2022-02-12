@@ -1,5 +1,5 @@
 "use strict";
-/// SIGN IN APPLE TS
+/// APPLE SIGN IN TS
 ///
 /// Copyright © 2020 - 2022 IGLU. All rights reserved.
 /// Copyright © 2020 - 2022 IGLU
