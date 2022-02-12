@@ -1,6 +1,6 @@
 {
   "name": "apple-sign-in-ts",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Typescript nodejs module that handle the Sign in with Apple",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
