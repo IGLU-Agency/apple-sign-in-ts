@@ -12,13 +12,16 @@ import * as fs from "fs"
 export enum AppleSignInPlatform {
   ios,
   android,
+  web,
 }
 
 export interface AppleSignInConfig {
   client_id_ios: string
   client_id_android: string
   team_id: string
+  //ANDROID
   redirect_uri: string
+  redirect_uri_web: string
   key_id: string
   /**
    * Example: "name email"
@@ -52,7 +55,7 @@ export class AppleSignIn {
     const payload: any = {
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: this.config.redirect_uri,
+      redirect_uri: platform == AppleSignInPlatform.web ? this.config.redirect_uri_web : this.config.redirect_uri,
       client_id: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
       client_secret: token,
     }
@@ -70,7 +73,7 @@ export class AppleSignIn {
     const payload: any = {
       grant_type: "refresh_token",
       refresh_token: refreshToken,
-      redirect_uri: this.config.redirect_uri,
+      redirect_uri: platform == AppleSignInPlatform.web ? this.config.redirect_uri_web : this.config.redirect_uri,
       client_id: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
       client_secret: token,
     }

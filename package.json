@@ -1,6 +1,6 @@
 {
   "name": "apple-sign-in-ts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Typescript nodejs module that handle the Sign in with Apple",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -30,14 +30,14 @@
   },
   "homepage": "https://github.com/IGLU-Agency/apple-sign-in-ts#readme",
   "devDependencies": {
-    "@types/jsonwebtoken": "^8.5.8",
+    "@types/jsonwebtoken": "^8.5.9",
     "@types/fs-extra": "^9.0.13"
   },
   "dependencies": {
-    "axios": "^0.25.0",
+    "axios": "^1.1.2",
     "jsonwebtoken": "^8.5.1",
     "fs": "0.0.1-security",
-    "fs-extra": "^10.0.0"
+    "fs-extra": "^10.1.0"
   },
   "directories": {
     "lib": "lib"

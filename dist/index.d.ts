@@ -1,12 +1,14 @@
 export declare enum AppleSignInPlatform {
     ios = 0,
-    android = 1
+    android = 1,
+    web = 2
 }
 export interface AppleSignInConfig {
     client_id_ios: string;
     client_id_android: string;
     team_id: string;
     redirect_uri: string;
+    redirect_uri_web: string;
     key_id: string;
     /**
      * Example: "name email"
