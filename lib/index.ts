@@ -5,9 +5,9 @@
 ///
 
 import axios from "axios"
-import * as qs from "querystring"
-import * as jwt from "jsonwebtoken"
-import * as fs from "fs"
+import qs from "querystring"
+import jwt from "jsonwebtoken"
+import fs from "fs"
 
 export enum AppleSignInPlatform {
   ios,
@@ -101,6 +101,7 @@ export class AppleSignIn {
           return undefined
         }
         privateK = privateKey
+        return
       })
     } else {
       privateK = this.privateKeyLocation

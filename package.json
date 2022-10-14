@@ -1,13 +1,13 @@
 {
   "name": "apple-sign-in-ts",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Typescript nodejs module that handle the Sign in with Apple",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublish": "npm run build && npm publish --dry-run",
+    "gopublish": "npm run build && npm publish"
   },
   "repository": {
     "type": "git",

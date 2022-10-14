@@ -1,3 +1,7 @@
+## Version 1.0.4 - 14/10/2022 - Luca Iaconelli ([IGLU](https://www.iglu.dev/en/))
+
+- bug fix
+
 ## Version 1.0.3 - 13/10/2022 - Luca Iaconelli ([IGLU](https://www.iglu.dev/en/))
 
 - added redirect_uri_web
