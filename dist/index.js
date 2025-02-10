@@ -1,8 +1,8 @@
 "use strict";
 /// APPLE SIGN IN TS
 ///
-/// Copyright © 2020 - 2022 IGLU. All rights reserved.
-/// Copyright © 2020 - 2022 IGLU
+/// Copyright © 2020 - 2025 IGLU. All rights reserved.
+/// Copyright © 2020 - 2025 IGLU
 ///
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppleSignIn = exports.AppleSignInPlatform = void 0;
@@ -16,7 +16,8 @@ var AppleSignInPlatform;
     AppleSignInPlatform[AppleSignInPlatform["ios"] = 0] = "ios";
     AppleSignInPlatform[AppleSignInPlatform["android"] = 1] = "android";
     AppleSignInPlatform[AppleSignInPlatform["web"] = 2] = "web";
-})(AppleSignInPlatform = exports.AppleSignInPlatform || (exports.AppleSignInPlatform = {}));
+    AppleSignInPlatform[AppleSignInPlatform["next"] = 3] = "next";
+})(AppleSignInPlatform || (exports.AppleSignInPlatform = AppleSignInPlatform = {}));
 class AppleSignIn {
     constructor(config, privateKey, privateKeyMethod) {
         Object.defineProperty(this, "config", {
@@ -62,13 +63,17 @@ class AppleSignIn {
             this.privateKeyMethod = privateKeyMethod;
         }
     }
-    async accessToken(code, platform) {
-        const token = await this.generateToken(platform);
+    async accessToken(code, platform, redirect_uri = undefined, client_id = undefined) {
+        const token = await this.generateToken(platform, client_id);
         const payload = {
             grant_type: "authorization_code",
             code: code,
-            redirect_uri: platform == AppleSignInPlatform.web ? this.config.redirect_uri_web : this.config.redirect_uri,
-            client_id: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
+            redirect_uri: redirect_uri !== null && redirect_uri !== void 0 ? redirect_uri : (platform == AppleSignInPlatform.next
+                ? this.config.redirect_uri_next
+                : platform == AppleSignInPlatform.web
+                    ? this.config.redirect_uri_web
+                    : this.config.redirect_uri),
+            client_id: client_id !== null && client_id !== void 0 ? client_id : (platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android),
             client_secret: token,
         };
         var response = await (0, axios_1.default)({
@@ -79,13 +84,17 @@ class AppleSignIn {
         });
         return response.data;
     }
-    async refreshToken(refreshToken, platform) {
-        const token = await this.generateToken(platform);
+    async refreshToken(refreshToken, platform, redirect_uri = undefined, client_id = undefined) {
+        const token = await this.generateToken(platform, client_id);
         const payload = {
             grant_type: "refresh_token",
             refresh_token: refreshToken,
-            redirect_uri: platform == AppleSignInPlatform.web ? this.config.redirect_uri_web : this.config.redirect_uri,
-            client_id: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
+            redirect_uri: redirect_uri !== null && redirect_uri !== void 0 ? redirect_uri : (platform == AppleSignInPlatform.next
+                ? this.config.redirect_uri_next
+                : platform == AppleSignInPlatform.web
+                    ? this.config.redirect_uri_web
+                    : this.config.redirect_uri),
+            client_id: client_id !== null && client_id !== void 0 ? client_id : (platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android),
             client_secret: token,
         };
         var response = await (0, axios_1.default)({
@@ -96,13 +105,13 @@ class AppleSignIn {
         });
         return response.data;
     }
-    async generateToken(platform) {
+    async generateToken(platform, client_id = undefined) {
         const claims = {
             iss: this.config.team_id,
             iat: Math.floor(Date.now() / 1000),
             exp: Math.floor(Date.now() / 1000) + 86400 * 180,
             aud: "https://appleid.apple.com",
-            sub: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
+            sub: client_id !== null && client_id !== void 0 ? client_id : (platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android),
         };
         var privateK;
         if (this.privateKeyMethod == "file") {
