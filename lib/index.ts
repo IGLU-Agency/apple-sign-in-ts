@@ -1,7 +1,7 @@
 /// APPLE SIGN IN TS
 ///
-/// Copyright © 2020 - 2022 IGLU. All rights reserved.
-/// Copyright © 2020 - 2022 IGLU
+/// Copyright © 2020 - 2025 IGLU. All rights reserved.
+/// Copyright © 2020 - 2025 IGLU
 ///
 
 import axios from "axios"
