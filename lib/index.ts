@@ -13,6 +13,7 @@ export enum AppleSignInPlatform {
   ios,
   android,
   web,
+  next,
 }
 
 export interface AppleSignInConfig {
@@ -22,6 +23,7 @@ export interface AppleSignInConfig {
   //ANDROID
   redirect_uri: string
   redirect_uri_web: string
+  redirect_uri_next: string
   key_id: string
   /**
    * Example: "name email"
@@ -50,13 +52,25 @@ export class AppleSignIn {
     }
   }
 
-  public async accessToken(code: String, platform: AppleSignInPlatform) {
-    const token = await this.generateToken(platform)
+  public async accessToken(
+    code: string,
+    platform: AppleSignInPlatform,
+    redirect_uri: string | undefined = undefined,
+    client_id: string | undefined = undefined
+  ) {
+    const token = await this.generateToken(platform, client_id)
     const payload: any = {
       grant_type: "authorization_code",
       code: code,
-      redirect_uri: platform == AppleSignInPlatform.web ? this.config.redirect_uri_web : this.config.redirect_uri,
-      client_id: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
+      redirect_uri:
+        redirect_uri ??
+        (platform == AppleSignInPlatform.next
+          ? this.config.redirect_uri_next
+          : platform == AppleSignInPlatform.web
+          ? this.config.redirect_uri_web
+          : this.config.redirect_uri),
+      client_id:
+        client_id ?? (platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android),
       client_secret: token,
     }
     var response = await axios({
@@ -68,13 +82,25 @@ export class AppleSignIn {
     return response.data
   }
 
-  public async refreshToken(refreshToken: String, platform: AppleSignInPlatform) {
-    const token = await this.generateToken(platform)
+  public async refreshToken(
+    refreshToken: String,
+    platform: AppleSignInPlatform,
+    redirect_uri: String | undefined = undefined,
+    client_id: string | undefined = undefined
+  ) {
+    const token = await this.generateToken(platform, client_id)
     const payload: any = {
       grant_type: "refresh_token",
       refresh_token: refreshToken,
-      redirect_uri: platform == AppleSignInPlatform.web ? this.config.redirect_uri_web : this.config.redirect_uri,
-      client_id: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
+      redirect_uri:
+        redirect_uri ??
+        (platform == AppleSignInPlatform.next
+          ? this.config.redirect_uri_next
+          : platform == AppleSignInPlatform.web
+          ? this.config.redirect_uri_web
+          : this.config.redirect_uri),
+      client_id:
+        client_id ?? (platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android),
       client_secret: token,
     }
     var response = await axios({
@@ -86,13 +112,14 @@ export class AppleSignIn {
     return response.data
   }
 
-  private async generateToken(platform: AppleSignInPlatform) {
+  private async generateToken(platform: AppleSignInPlatform, client_id: string | undefined = undefined) {
     const claims = {
       iss: this.config.team_id,
       iat: Math.floor(Date.now() / 1000),
       exp: Math.floor(Date.now() / 1000) + 86400 * 180,
       aud: "https://appleid.apple.com",
-      sub: platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android,
+      sub:
+        client_id ?? (platform == AppleSignInPlatform.ios ? this.config.client_id_ios : this.config.client_id_android),
     }
     var privateK: any
     if (this.privateKeyMethod == "file") {

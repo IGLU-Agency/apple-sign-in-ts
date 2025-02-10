@@ -1,4 +1,8 @@
-## Version 1.0.4 - 14/10/2022 - Luca Iaconelli ([IGLU](https://www.iglu.dev/en/))
+# Version 1.0.5 - 10/02/2025 - Luca Iaconelli ([IGLU](https://www.iglu.dev/en/))
+
+- bug fix
+
+# Version 1.0.4 - 14/10/2022 - Luca Iaconelli ([IGLU](https://www.iglu.dev/en/))
 
 - bug fix
 
